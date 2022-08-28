@@ -1,40 +1,71 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField
+from django.core.validators import RegexValidator
+from django.db.models import UniqueConstraint
 from django.db import models
-#from pkg_resources import _
 
 
-class CustomUser(AbstractUser):
-    """Модель Пользователя"""
-    password = CharField(max_length=150)
-    email = models.EmailField(blank=True, unique=True)
+class User(AbstractUser):
+    username = models.CharField(max_length=250)
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=250)
+    last_name = models.CharField(max_length=250)
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'password']
 
-    REQUIRED_FIELDS = [
-        "username",
-        "first_name",
-        "last_name",
-    ]
+    def __str__(self):
+        return self.username
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='follower',
+        verbose_name='Подписчик',
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='following',
+        verbose_name='Автор',
+    )
 
     class Meta:
-        ordering = ("id",)
+        verbose_name = 'Подписка'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'],
+                name='unique follow',
+            )
+        ]
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="follower",
+        verbose_name="Подписчик",
+    )
+    following = models.ForeignKey(
+        User,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="following",
+        verbose_name="Подписка",
+    )
 
     def __str__(self):
-        return self.email
+        return self.user.username
 
-
-class Subscription(models.Model):
-    """Подписка на других авторов рецепта"""
-    author = models.ForeignKey(
-        CustomUser,
-        on_delete=models.CASCADE,
-        related_name='author'
-    )
-    follower = models.ForeignKey(
-        CustomUser,
-        on_delete=models.CASCADE,
-        related_name='follower'
-    )
-
-    def __str__(self):
-        return f'Пользователь {self.author}, подписался на {self.follower}'
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
+        constraints = [
+            UniqueConstraint(
+                fields=["user", "following"], name="follow_unique"
+            )
+        ]

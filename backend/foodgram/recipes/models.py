@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import CustomUser
+from users.models import User
 
 
 class Tag(models.Model):
@@ -23,7 +23,7 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
-    author = models.ForeignKey(CustomUser,
+    author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
                                related_name='recipe',
                                verbose_name='Автор рецепта')
@@ -84,7 +84,7 @@ class TagsInRecipe(models.Model):
 
 
 class FavoriteRecipe(models.Model):
-    user = models.ForeignKey(CustomUser,
+    user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name="favorite",
                              verbose_name="Пользователь")
@@ -99,7 +99,7 @@ class FavoriteRecipe(models.Model):
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(CustomUser,
+    user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name="cart",
                              verbose_name="Пользователь")

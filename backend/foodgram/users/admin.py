@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import CustomUser
+from .models import User
 
 from recipes.models import (Tag,
                             Ingredient,
@@ -52,7 +52,7 @@ class CartAdmin(admin.ModelAdmin):
     list_filter = ("user", "recipe")
 
 
-admin.site.register(CustomUser, UserAdmin)
+admin.site.register(User, UserAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
