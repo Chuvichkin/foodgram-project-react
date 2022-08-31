@@ -33,39 +33,8 @@ class Follow(models.Model):
     class Meta:
         verbose_name = 'Подписка'
         constraints = [
-            models.UniqueConstraint(
+            UniqueConstraint(
                 fields=['user', 'author'],
                 name='unique follow',
-            )
-        ]
-
-
-class Follow(models.Model):
-    user = models.ForeignKey(
-        User,
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-        related_name="follower",
-        verbose_name="Подписчик",
-    )
-    following = models.ForeignKey(
-        User,
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-        related_name="following",
-        verbose_name="Подписка",
-    )
-
-    def __str__(self):
-        return self.user.username
-
-    class Meta:
-        verbose_name = "Подписка"
-        verbose_name_plural = "Подписки"
-        constraints = [
-            UniqueConstraint(
-                fields=["user", "following"], name="follow_unique"
             )
         ]
