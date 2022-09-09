@@ -1,7 +1,7 @@
 ![foodgram-project-react Workflow Status](https://github.com/chuvichkin/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg?branch=master&event=push)
 # Продуктовый помощник Foodgram
 
-Проект доступен по адресу 158.160.1.16
+Проект доступен по адресу http://158.160.4.80
 
 ## Описание проекта Foodgram
 «Продуктовый помощник»: приложение, на котором пользователи публикуют рецепты, подписываться на публикации других авторов и добавлять рецепты в избранное. Сервис «Список покупок» позволит пользователю создавать список продуктов, которые нужно купить для приготовления выбранных блюд.
@@ -16,24 +16,12 @@ sudo curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
-Создать папку infra:
-```bash
-mkdir infra
-```
-- Перенести файлы docker-compose.yml и default.conf на сервер.
-
-```bash
-scp docker-compose.yml username@server_ip:/home/<username>/
-```
-```bash
-scp default.conf <username>@<server_ip>:/home/<username>/
-```
-- Создать файл .env в дериктории infra:
+- Создайте файл .env в директории infra:
 
 ```bash
 touch .env
 ```
-- Заполнить в настройках репозитория секреты .env
+- Заполните .env, согласно настройкам БД
 
 ```python
 DB_ENGINE='django.db.backends.postgresql'
@@ -42,14 +30,18 @@ POSTGRES_USER=
 POSTGRES_PASSWORD=
 DB_HOST=db
 DB_PORT='5432'
-SECRET_KEY=
-ALLOWED_HOSTS=
+```
+- Перенесите файлы docker-compose.yml, .env и default.conf на сервер.
+
+```bash
+scp docker-compose.yml username@server_ip:/home/<username>/
+scp default.conf <username>@<server_ip>:/home/<username>/
+scp .env <username>@<server_ip>:/home/<username>/
 ```
 
-Скопируйте на сервер настройки docker-compose.yml, default.conf из папки infra.
 
 ## Запуск проекта через Docker
-- В папке infra выполнить команду, чтобы собрать контейнер:
+- На сервере выполнить команду, чтобы собрать контейнер:
 ```bash
 sudo docker-compose up -d
 ```
@@ -69,10 +61,10 @@ sudo docker-compose exec backend python manage.py createsuperuser
 sudo docker-compose exec backend python manage.py collectstatic --no-input
 ```
 
-Дополнительно можно наполнить DB ингредиентами и тэгами:
+Дополнительно можно наполнить DB ингредиентами:
 
 ```bash
-sudo docker-compose exec backend python manage.py load_ingrs
+sudo docker-compose exec backend python manage.py ingredients.json
 ```
 
 ## Запуск проекта в dev-режиме
@@ -101,11 +93,6 @@ python manage.py migrate
 - В папке с файлом manage.py выполнить команду:
 ```bash
 python manage.py runserver
-```
-
-### Документация к API доступна после запуска
-```url
-http://127.0.0.1/api/docs/
 ```
 
 ## Автор
