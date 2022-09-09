@@ -21,7 +21,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 ```bash
 touch .env
 ```
-- Заполните .env, согласно настройкам БД
+- Заполните .env, согласно настройкам БД:
 
 ```python
 DB_ENGINE='django.db.backends.postgresql'
@@ -31,7 +31,7 @@ POSTGRES_PASSWORD=
 DB_HOST=db
 DB_PORT='5432'
 ```
-- Перенесите файлы docker-compose.yml, .env и default.conf на сервер.
+- Перенесите файлы docker-compose.yml, .env и default.conf на сервер:
 
 ```bash
 scp docker-compose.yml username@server_ip:/home/<username>/
@@ -69,7 +69,7 @@ sudo docker-compose exec backend python manage.py ingredients.json
 
 ## Запуск проекта в dev-режиме
 
-- Установить и активировать виртуальное окружение
+- Установить и активировать виртуальное окружение:
 
 ```bash
 source /venv/bin/activated
