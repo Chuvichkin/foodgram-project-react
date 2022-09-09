@@ -11,7 +11,7 @@ services:
     restart: always
 
   backend:
-    image: chuvichkin/foodgram-backend:v11
+    image: chuvichkin/foodgram-backend:v12
     restart: always
     volumes:
       - static_value:/app/static/
@@ -22,7 +22,7 @@ services:
       - ./.env
 
   frontend:
-    image: chuvichkin/foodgram-frontend:v11
+    image: chuvichkin/foodgram-frontend:v12
     volumes:
       - ../frontend/:/app/result_build/
 
